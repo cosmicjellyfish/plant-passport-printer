@@ -1,0 +1,18 @@
+@import '../../styles/mixins';
+@import './App';
+@import './DefaultPage';
+@import './PlantForm';
+
+form.plant-passport {
+  .form-section {
+    label {
+      text-align: left;      
+      float: left;
+      clear: left;
+      width: 250px;
+    }
+    input {
+      float: left;
+    }
+  }
+}
