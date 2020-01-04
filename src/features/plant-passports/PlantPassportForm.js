@@ -166,7 +166,10 @@ class PassportDocument extends Component {
     return (
       <PDFViewer width="600" height="600">
         <Document>
-          <Page size="A4">
+          <Page
+            size={this.props[META].pageSize}
+            orientation={this.props[META].pageOrientation}
+          >
             <View style={PassportDocument.styles.wrapper}>
               <View style={PassportDocument.styles.container}>
                 <View style={PassportDocument.styles.heading}>
@@ -211,6 +214,8 @@ export class PlantPassportForm extends Component {
       [META]: {
         flagColor: 'black',
         plantPassportTitle: DEFAULT_PLANT_PASSPORT_TITLE,
+        pageSize: 'A4',
+        pageOrientation: 'portrait'
       },
       [PART_A]: {
         genusName: '',
@@ -306,7 +311,7 @@ export class PlantPassportForm extends Component {
           Flag color
         </label>
         <div class="input-block">
-          <div>
+          <div class="nested-input-block">
             <input
               id="flag-color-black"
               type="radio"
@@ -321,7 +326,7 @@ export class PlantPassportForm extends Component {
             </label>
             <br />
           </div>
-          <div>
+          <div class="nested-input-block">
             <input
               id="flag-color-white"
               type="radio"
@@ -332,6 +337,99 @@ export class PlantPassportForm extends Component {
               checked={this.state[META].flagColor === "white"}
             ></input>
             <label htmlFor="flag-color-white">White</label>
+            <br />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderPageSizeCheckbox() {
+    return (
+      <div class="input-row page-size">
+        <label class="page-size" htmlFor="page-size">
+          Page Size
+        </label>
+        <div class="input-block">
+          <div class="nested-input-block">
+            <input
+              id="page-size-A4"
+              type="radio"
+              class="page-size"
+              name="pageSize"
+              value="A4"
+              onChange={this.getHandleChange(META)}
+              checked={this.state[META].pageSize === "A4"}
+            ></input>
+            <label class="page-size" htmlFor="page-size-A4">
+              A4
+            </label>
+            <br />
+          </div>
+          <div class="nested-input-block">
+            <input
+              id="page-size-A5"
+              type="radio"
+              class="page-size"
+              name="pageSize"
+              value="A5"
+              onChange={this.getHandleChange(META)}
+              checked={this.state[META].pageSize === "A5"}
+            ></input>
+            <label htmlFor="page-size-A5">A5</label>
+            <br />
+          </div>
+          <div class="nested-input-block">
+            <input
+              id="page-size-A6"
+              type="radio"
+              class="page-size"
+              name="pageSize"
+              value="A6"
+              onChange={this.getHandleChange(META)}
+              checked={this.state[META].pageSize === "A6"}
+            ></input>
+            <label htmlFor="page-size-A6">A6</label>
+            <br />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderPageOrientationCheckbox() {
+    return (
+      <div class="input-row page-orientation">
+        <label class="page-orientation" htmlFor="page-orientation">
+          Page orientation
+        </label>
+        <div class="input-block">
+          <div class="nested-input-block">
+            <input
+              id="page-orientation-portrait"
+              type="radio"
+              class="page-orientation"
+              name="pageOrientation"
+              value="portrait"
+              onChange={this.getHandleChange(META)}
+              checked={this.state[META].pageOrientation === "portrait"}
+            ></input>
+            <label class="page-orientation" htmlFor="page-orientation-portrait">
+              Portrait
+            </label>
+            <br />
+          </div>
+          <div class="nested-input-block">
+            <input
+              id="page-orientation-landscape"
+              type="radio"
+              class="page-orientation"
+              name="pageOrientation"
+              value="landscape"
+              onChange={this.getHandleChange(META)}
+              checked={this.state[META].pageOrientation === "landscape"}
+            ></input>
+            <label htmlFor="page-orientation-landscape">Landscape</label>
             <br />
           </div>
         </div>
@@ -352,6 +450,8 @@ export class PlantPassportForm extends Component {
             'Plant Passport Title',
           )}
           {this.renderFlagColorCheckbox()}
+          {this.renderPageSizeCheckbox()}
+          {this.renderPageOrientationCheckbox()}
         </fieldset>
         <fieldset className="form-section part-a">
           <legend className="section-title">Part A: Botanical Name</legend>
@@ -389,7 +489,7 @@ export class PlantPassportForm extends Component {
             PROTECTED_ZONE,
             'include-pz',
             'includePZ',
-            'Include Protected Zone information',
+            'Protected Zone section',
             { type: 'checkbox', callback: this.togglePZTitle },
           )}
           {this.inputElement(PROTECTED_ZONE, 'PZ-code', 'PZCode', 'Protected Zone Code', pzFlag)}
@@ -409,7 +509,9 @@ export class PlantPassportForm extends Component {
   render() {
     return (
       <div className="plant-passport-container">
-        {this.renderPassportForm()}
+        <div clasName="form-container">
+          {this.renderPassportForm()}
+        </div>
         <div className="pp-preview">
           <PassportDocument
             meta={this.state[META]}
