@@ -7,7 +7,7 @@ import * as actions from './redux/actions';
 import { Document, Page, Text, Image, View, StyleSheet, Font } from '@react-pdf/renderer';
 import euFlagBlack from './images/eu-flag-black.png';
 import euFlagWhite from './images/eu-flag-white.png';
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import { PDFViewer } from '@react-pdf/renderer';
 
 const PART_A = 'partA';
 const PART_B = 'partB';
@@ -120,7 +120,7 @@ class PassportDocument extends Component {
       borderColor: 'black',
       margin: '30px',
       paddingRight: '20px',
-      paddingBottom: '15px',
+      paddingBottom: '5px',
     },
     wrapper: {
       flexDirection: 'row',
@@ -157,15 +157,9 @@ class PassportDocument extends Component {
     }
     return (
       <View style={PassportDocument.styles.protectedZone}>
-        <Text style={PassportDocument.styles.pzItem}>
-          {PZCode}
-        </Text>
-        <Text style={PassportDocument.styles.pzItem}>
-          {scientificName}
-        </Text>
-        <Text style={PassportDocument.styles.pzItem}>
-          {EPPOCode}
-        </Text>
+        <Text style={PassportDocument.styles.pzItem}>{PZCode}</Text>
+        <Text style={PassportDocument.styles.pzItem}>{scientificName}</Text>
+        <Text style={PassportDocument.styles.pzItem}>{EPPOCode}</Text>
       </View>
     );
   }
@@ -182,10 +176,7 @@ class PassportDocument extends Component {
     return (
       <PDFViewer width="600" height="600">
         <Document>
-          <Page
-            size={this.props[META].pageSize}
-            orientation={this.props[META].pageOrientation}
-          >
+          <Page size={this.props[META].pageSize} orientation={this.props[META].pageOrientation}>
             <View style={PassportDocument.styles.wrapper}>
               <View style={PassportDocument.styles.container}>
                 <View style={PassportDocument.styles.heading}>
@@ -198,19 +189,19 @@ class PassportDocument extends Component {
                   </View>
                 </View>
                 <Text style={PassportDocument.styles.part}>
-                  <Text style={PassportDocument.styles.partLetter}>A:&nbsp;</Text>
+                  <Text style={PassportDocument.styles.partLetter}>A:&nbsp;&nbsp;</Text>
                   {this.renderBotanicalName()}
                 </Text>
                 <Text style={PassportDocument.styles.part}>
-                  <Text style={PassportDocument.styles.partLetter}>B:&nbsp;</Text>
+                  <Text style={PassportDocument.styles.partLetter}>B:&nbsp;&nbsp;</Text>
                   {this.renderIssuerDetails()}
                 </Text>
                 <Text style={PassportDocument.styles.part}>
-                  <Text style={PassportDocument.styles.partLetter}>C:&nbsp;</Text>
+                  <Text style={PassportDocument.styles.partLetter}>C:&nbsp;&nbsp;</Text>
                   {this.props[PART_C].traceabilityCode}
                 </Text>
                 <Text style={PassportDocument.styles.part}>
-                  <Text style={PassportDocument.styles.partLetter}>D:&nbsp;</Text>
+                  <Text style={PassportDocument.styles.partLetter}>D:&nbsp;&nbsp;</Text>
                   {this.props[PART_D].countryOfOrigin}
                 </Text>
               </View>
@@ -233,7 +224,7 @@ export class PlantPassportForm extends Component {
         flagColor: 'black',
         plantPassportTitle: DEFAULT_PLANT_PASSPORT_TITLE,
         pageSize: 'A4',
-        pageOrientation: 'portrait'
+        pageOrientation: 'portrait',
       },
       [PART_A]: {
         genusName: '',
@@ -276,13 +267,21 @@ export class PlantPassportForm extends Component {
   }
 
   inputElement(part, id, name, label, extra = {}) {
-    const _type = extra['type'] ? extra['type'] : 'text';
+    const _type = extra['type'] || 'text';
+    const onChange = extra['onChange'] || this.getHandleChange(part);
     const callbackFunction = extra['callback']
       ? e => {
-          this.getHandleChange(part)(e);
+          onChange(e);
           extra['callback'](e);
         }
-      : this.getHandleChange(part);
+      : onChange;
+
+    const acceptedInputProps = ['maxLength', 'style'];
+    const inputProps = {};
+    for (var i = 0; i < acceptedInputProps.length; i++) {
+      var p = acceptedInputProps[i];
+      inputProps[p] = extra[p];
+    }
     return (
       <div class="input-row">
         <label htmlFor={id}>{label}:</label>
@@ -293,6 +292,7 @@ export class PlantPassportForm extends Component {
           type={_type}
           value={this.state[part][name]}
           onChange={callbackFunction}
+          {...inputProps}
         />
       </div>
     );
@@ -337,7 +337,7 @@ export class PlantPassportForm extends Component {
               name="flagColor"
               value="black"
               onChange={this.getHandleChange(META)}
-              checked={this.state[META].flagColor === "black"}
+              checked={this.state[META].flagColor === 'black'}
             ></input>
             <label class="flag-color" htmlFor="flag-color-black">
               Black
@@ -352,7 +352,7 @@ export class PlantPassportForm extends Component {
               name="flagColor"
               value="white"
               onChange={this.getHandleChange(META)}
-              checked={this.state[META].flagColor === "white"}
+              checked={this.state[META].flagColor === 'white'}
             ></input>
             <label htmlFor="flag-color-white">White</label>
             <br />
@@ -377,7 +377,7 @@ export class PlantPassportForm extends Component {
               name="pageSize"
               value="A4"
               onChange={this.getHandleChange(META)}
-              checked={this.state[META].pageSize === "A4"}
+              checked={this.state[META].pageSize === 'A4'}
             ></input>
             <label class="page-size" htmlFor="page-size-A4">
               A4
@@ -392,7 +392,7 @@ export class PlantPassportForm extends Component {
               name="pageSize"
               value="A5"
               onChange={this.getHandleChange(META)}
-              checked={this.state[META].pageSize === "A5"}
+              checked={this.state[META].pageSize === 'A5'}
             ></input>
             <label htmlFor="page-size-A5">A5</label>
             <br />
@@ -405,7 +405,7 @@ export class PlantPassportForm extends Component {
               name="pageSize"
               value="A6"
               onChange={this.getHandleChange(META)}
-              checked={this.state[META].pageSize === "A6"}
+              checked={this.state[META].pageSize === 'A6'}
             ></input>
             <label htmlFor="page-size-A6">A6</label>
             <br />
@@ -430,7 +430,7 @@ export class PlantPassportForm extends Component {
               name="pageOrientation"
               value="portrait"
               onChange={this.getHandleChange(META)}
-              checked={this.state[META].pageOrientation === "portrait"}
+              checked={this.state[META].pageOrientation === 'portrait'}
             ></input>
             <label class="page-orientation" htmlFor="page-orientation-portrait">
               Portrait
@@ -445,7 +445,7 @@ export class PlantPassportForm extends Component {
               name="pageOrientation"
               value="landscape"
               onChange={this.getHandleChange(META)}
-              checked={this.state[META].pageOrientation === "landscape"}
+              checked={this.state[META].pageOrientation === 'landscape'}
             ></input>
             <label htmlFor="page-orientation-landscape">Landscape</label>
             <br />
@@ -484,7 +484,14 @@ export class PlantPassportForm extends Component {
             'operator-country-code',
             'operatorCountryCode',
             'Operator Country Code',
-            { maxLength: 2, style: { textTransform: 'uppercase' } },
+            {
+              maxLength: 2,
+              style: { textTransform: 'uppercase' },
+              onChange: e => {
+                e.target.value = e.target.value.toUpperCase();
+                this.getHandleChange(PART_B)(e);
+              },
+            },
           )}
           {this.inputElement(
             PART_B,
@@ -503,13 +510,10 @@ export class PlantPassportForm extends Component {
         </fieldset>
         <fieldset className="form-section protected-zone">
           <legend className="section-title">Protected Zone</legend>
-          {this.inputElement(
-            PROTECTED_ZONE,
-            'include-pz',
-            'includePZ',
-            'Protected Zone section',
-            { type: 'checkbox', callback: this.togglePZTitle },
-          )}
+          {this.inputElement(PROTECTED_ZONE, 'include-pz', 'includePZ', 'Protected Zone section', {
+            type: 'checkbox',
+            callback: this.togglePZTitle,
+          })}
           {this.inputElement(PROTECTED_ZONE, 'PZ-code', 'PZCode', 'Protected Zone Code', pzFlag)}
           {this.inputElement(
             PROTECTED_ZONE,
@@ -527,9 +531,7 @@ export class PlantPassportForm extends Component {
   render() {
     return (
       <div className="plant-passport-container">
-        <div clasName="form-container">
-          {this.renderPassportForm()}
-        </div>
+        <div clasName="form-container">{this.renderPassportForm()}</div>
         <div className="pp-preview">
           <PassportDocument
             meta={this.state[META]}
