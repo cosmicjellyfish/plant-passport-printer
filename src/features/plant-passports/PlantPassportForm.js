@@ -77,13 +77,22 @@ class PassportDocument extends Component {
 
   static styles = StyleSheet.create({
     heading: {
-      marginBottom: '20px',
       flex: 1,
       flexDirection: 'row',
     },
     headingText: {
-      marginTop: '5px',
+      flexDirection: 'column',
       marginLeft: '15px',
+    },
+    headingTitle: {
+      fontSize: '16pt',
+      marginTop: '5px',
+      maxWidth: '200px',
+    },
+    protectedZone: {
+      paddingLeft: '0px',
+      marginLeft: '0px',
+      fontSize: '16pt',
     },
     flag: {
       height: 80,
@@ -93,7 +102,9 @@ class PassportDocument extends Component {
       borderTopWidth: '0',
       borderLeftWidth: '0',
       borderColor: 'black',
+      marginBottom: '5px',
     },
+    pzItem: {},
     part: {
       marginLeft: '20px',
       marginBottom: '5px',
@@ -112,7 +123,6 @@ class PassportDocument extends Component {
       paddingBottom: '15px',
     },
     wrapper: {
-      // flex: 1,
       flexDirection: 'row',
     },
   });
@@ -146,11 +156,17 @@ class PassportDocument extends Component {
       return;
     }
     return (
-      <React.Fragment>
-        <Text>{PZCode}</Text>
-        <Text>{scientificName}</Text>
-        <Text>{EPPOCode}</Text>
-      </React.Fragment>
+      <View style={PassportDocument.styles.protectedZone}>
+        <Text style={PassportDocument.styles.pzItem}>
+          {PZCode}
+        </Text>
+        <Text style={PassportDocument.styles.pzItem}>
+          {scientificName}
+        </Text>
+        <Text style={PassportDocument.styles.pzItem}>
+          {EPPOCode}
+        </Text>
+      </View>
     );
   }
 
@@ -174,9 +190,12 @@ class PassportDocument extends Component {
               <View style={PassportDocument.styles.container}>
                 <View style={PassportDocument.styles.heading}>
                   {this.renderFlag()}
-                  <Text style={PassportDocument.styles.headingText}>
-                    {this.props[META].plantPassportTitle}
-                  </Text>
+                  <View style={PassportDocument.styles.headingText}>
+                    <Text style={PassportDocument.styles.headingTitle}>
+                      {this.props[META].plantPassportTitle}
+                    </Text>
+                    {this.renderProtectedZone()}
+                  </View>
                 </View>
                 <Text style={PassportDocument.styles.part}>
                   <Text style={PassportDocument.styles.partLetter}>A:&nbsp;</Text>
@@ -193,7 +212,6 @@ class PassportDocument extends Component {
                 <Text style={PassportDocument.styles.part}>
                   <Text style={PassportDocument.styles.partLetter}>D:&nbsp;</Text>
                   {this.props[PART_D].countryOfOrigin}
-                  {this.renderProtectedZone()}
                 </Text>
               </View>
             </View>

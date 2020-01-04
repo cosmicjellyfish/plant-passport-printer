@@ -3,6 +3,10 @@
   flex-wrap: wrap;
   flex-direction: 'row';
 
+  .pp-preview {
+    flex: 1;
+  }
+
   .plant-passport-form {
     .input-row {
       display: flex;
@@ -40,8 +44,6 @@
           }
         }
       }
-
-
     }
   }
 }
