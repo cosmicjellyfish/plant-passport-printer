@@ -1,10 +1,10 @@
 @import '../../styles/mixins';
 
 .plant-passports-default-page {
-  text-align: center;
-  .app {
-    text-align: center;
-  }
+  // text-align: center;
+  // .app {
+  //   text-align: center;
+  // }
 
   .app-logo {
     animation: app-logo-spin infinite 10s linear;
@@ -21,7 +21,7 @@
 
   .app-header {
     background-color: #222;
-    height: 150px;
+    height: 100px;
     padding: 20px;
     color: white;
     overflow: hidden;

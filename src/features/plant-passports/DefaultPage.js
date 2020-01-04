@@ -7,11 +7,10 @@ import reactLogo from '../../images/react-logo.svg';
 import rekitLogo from '../../images/rekit-logo.svg';
 import * as actions from './redux/actions';
 
-import PlantForm from './PlantForm'
+import PlantPassportForm from './PlantPassportForm'
 
 export class DefaultPage extends Component {
   static propTypes = {
-    PlantPrinter: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -19,12 +18,11 @@ export class DefaultPage extends Component {
     return (
       <div className="plant-passports-default-page">
         <header className="app-header">
-          <img src={reactLogo} className="app-logo" alt="logo" />
-          <img src={rekitLogo} className="rekit-logo" alt="logo" />
-          <h1 className="app-title">Welcome to React</h1>
+          <h1 className="app-title">Welcome to the Plant Passport issuing office!</h1>
+          <h6>Please repot any unattented saplings</h6>
         </header>
         <div className="app-intro">
-        <PlantForm/>
+        <PlantPassportForm/>
         </div>
       </div>
     );
@@ -34,7 +32,6 @@ export class DefaultPage extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    PlantPrinter: state.PlantPrinter,
   };
 }
 

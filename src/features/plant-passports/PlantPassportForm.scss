@@ -1,0 +1,30 @@
+.plant-passport-form {
+  .input-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    & > label {
+      flex: 1 0 100px;
+      max-width: 270px;
+      font-size: 10pt;
+    }
+    & > input {
+      flex: 1 0 auto;
+      max-width: 200px;
+      font-size: 12pt;
+    }
+    .input-block {
+      label {
+        font-size: 12pt;
+      }
+    }
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      flex: 1 0 auto;
+      max-width: 200px;
+    }
+  }
+}
