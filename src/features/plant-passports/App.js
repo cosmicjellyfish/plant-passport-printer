@@ -12,13 +12,15 @@ export default class App extends Component {
   };
 
   static defaultProps = {
-    children: <DefaultPage/>,
+    children: '',
   };
 
   render() {
     return (
       <div className="plant-passports-app">
-        <div className="page-container">{this.props.children}</div>
+        <div className="page-container">
+          <DefaultPage/>
+        </div>
       </div>
     );
   }
