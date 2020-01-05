@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import DefaultPage from './DefaultPage'
 /*
   This is the root component of your app. Here you define the overall layout
   and the container of the react router.
@@ -12,7 +12,7 @@ export default class App extends Component {
   };
 
   static defaultProps = {
-    children: '',
+    children: <DefaultPage/>,
   };
 
   render() {

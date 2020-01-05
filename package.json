@@ -2,7 +2,7 @@
   "name": "plant-printer",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cosmicjellyfish.github.io/plant-passport-printer/",
+  "homepage": "https://cosmicjellyfish.github.io/plant-passport-printer",
   "dependencies": {
     "@react-pdf/renderer": "^1.6.8",
     "autoprefixer": "7.1.6",
