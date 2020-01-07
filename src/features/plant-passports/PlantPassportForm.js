@@ -531,7 +531,7 @@ export class PlantPassportForm extends Component {
   render() {
     return (
       <div className="plant-passport-container">
-        <div clasName="form-container">{this.renderPassportForm()}</div>
+        <div className="form-container">{this.renderPassportForm()}</div>
         <div className="pp-preview">
           <PassportDocument
             meta={this.state[META]}
