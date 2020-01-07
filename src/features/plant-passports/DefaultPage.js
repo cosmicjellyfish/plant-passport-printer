@@ -16,7 +16,7 @@ export class DefaultPage extends Component {
       <div className="plant-passports-default-page">
         <header className="app-header">
           <h1 className="app-title">Welcome to the Plant Passport issuing office!</h1>
-          <h6>Please repot any unattented saplings</h6>
+          <h6>Please repot any unattended saplings</h6>
         </header>
         <div className="app-intro">
         <PlantPassportForm/>
