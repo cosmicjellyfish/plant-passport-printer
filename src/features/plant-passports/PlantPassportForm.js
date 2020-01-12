@@ -7,7 +7,7 @@ import * as actions from './redux/actions';
 import { Document, Page, Text, Image, View, StyleSheet, Font } from '@react-pdf/renderer';
 import euFlagBlack from './images/eu-flag-black.png';
 import euFlagWhite from './images/eu-flag-white.png';
-import { PDFViewer } from '@react-pdf/renderer';
+import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 
 const PART_A = 'partA';
 const PART_B = 'partB';
@@ -132,10 +132,10 @@ class PassportDocument extends Component {
   }
 
   renderBotanicalName() {
-    const name = `${this.props[PART_A].genusName} ${this.props[PART_A].speciesName}`;
+    const name = this.props[PART_A].genusName + " " + this.props[PART_A].speciesName;
     const varietyName = this.props[PART_A].varietyName;
     if (!!varietyName) {
-      return name + ` (${varietyName})`;
+      return name + " " + varietyName;
     }
     return name;
   }
@@ -146,7 +146,7 @@ class PassportDocument extends Component {
     if (!nrn && !cc) {
       return '';
     }
-    return `${cc} - ${nrn}`;
+    return cc + " - " + nrn;
   }
 
   renderProtectedZone() {
@@ -174,7 +174,6 @@ class PassportDocument extends Component {
 
   render() {
     return (
-      <PDFViewer width="600" height="600">
         <Document>
           <Page size={this.props[META].pageSize} orientation={this.props[META].pageOrientation}>
             <View style={PassportDocument.styles.wrapper}>
@@ -208,7 +207,6 @@ class PassportDocument extends Component {
             </View>
           </Page>
         </Document>
-      </PDFViewer>
     );
   }
 }
@@ -528,19 +526,27 @@ export class PlantPassportForm extends Component {
     );
   }
 
+  renderPassportDocument() {
+    return <PassportDocument
+      meta={this.state[META]}
+      partA={this.state[PART_A]}
+      partB={this.state[PART_B]}
+      partC={this.state[PART_C]}
+      partD={this.state[PART_D]}
+      protectedZone={this.state[PROTECTED_ZONE]}
+    />
+  }
+
   render() {
     return (
       <div className="plant-passport-container">
         <div className="form-container">{this.renderPassportForm()}</div>
         <div className="pp-preview">
-          <PassportDocument
-            meta={this.state[META]}
-            partA={this.state[PART_A]}
-            partB={this.state[PART_B]}
-            partC={this.state[PART_C]}
-            partD={this.state[PART_D]}
-            protectedZone={this.state[PROTECTED_ZONE]}
-          />
+          {<PDFViewer width="600" height="600">{this.renderPassportDocument()}</PDFViewer>}
+          <div className="ie-dl-link">
+            Problems because of an outdated browser? Try a direct download:&nbsp;
+          {<DlLink makeDoc={() => this.renderPassportDocument()}></DlLink>}
+          </div>
         </div>
       </div>
     );
@@ -560,5 +566,29 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators({ ...actions }, dispatch),
   };
 }
+
+/**
+ * Having both a preview and a direct download causes an issue becuase of the
+ * font registration. This is a lift+shift hackfix from here:
+ * https://github.com/diegomura/react-pdf/issues/310#issuecomment-494676273
+ */
+class DlLink extends React.Component {
+  state = { load: false }
+
+  componentDidMount () {
+    window.setTimeout(this.setStartLoading.bind(this), 2000)
+  }
+
+  setStartLoading () { this.setState({ load: true }) }
+
+  render () {
+    const { load } = this.state
+    if (!load) { return null }
+    return <PDFDownloadLink key={Math.random()} document={this.props.makeDoc()} fileName="plant-passport.pdf">
+      {({ blob, url, loading, error }) => (loading ? 'Please wait...' : 'Download PDF')}
+      </PDFDownloadLink>
+  }
+}
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlantPassportForm);
