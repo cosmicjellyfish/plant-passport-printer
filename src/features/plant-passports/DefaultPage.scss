@@ -6,6 +6,10 @@
   //   text-align: center;
   // }
 
+  .introduction {
+    font-size: 10pt
+  }
+
   .app-logo {
     animation: app-logo-spin infinite 10s linear;
     height: 80px;
@@ -21,11 +25,33 @@
 
   .app-header {
     background-color: #222;
-    height: 100px;
+    // height: 100px;
     padding: 20px;
     color: white;
     overflow: hidden;
     position: relative;
+
+    h1 {
+      margin-bottom: 10px;
+    }
+    h6 {
+      margin-top: 0;
+      font-style: italic;
+    }
+    p {
+      margin-bottom: 5px;
+
+    }
+    ul {
+      margin-top: 10px;
+      margin-left: 20px;
+      li {
+        list-style-type: disc;
+        margin-top: 0;
+        margin-bottom: 2px;
+        color: grey;
+      }
+    }
   }
 
   .app-title {
